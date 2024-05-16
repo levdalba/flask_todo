@@ -1,0 +1,37 @@
+{%extends 'base.html'%}
+{%block content%}
+<div class="d-flex justify-content-between">
+    <h1 class="mt-4">Todo List</h1>
+    <div>
+        <form method="post" action="{{ url_for('change_theme') }}" style="display: inline">
+            <button type="submit" class="btn btn-secondary btn-sm">
+                {{ 'Light Mode' if session.get('theme') == 'dark' else 'Dark
+                Mode' }}
+            </button>
+        </form>
+        <a class="btn btn-success btn-sm" href="{{ url_for('logout') }}" style="height: 50%; margin-top: 20px">Log
+            Out</a>
+    </div>
+</div>
+<ul class="list-group mb-4">
+    {% for todo in todo_list %}
+    <li
+        class="list-group-item d-flex justify-content-between align-items-center {{ 'dark' if session.get('theme') == 'dark' else '' }}">
+        {{ todo }}
+        <span>
+            <form method="post" action="{{ url_for('mark_done', task_id=loop.index0) }}" style="display: inline">
+                <button type="submit" class="btn btn-success btn-sm">
+                    Done
+                </button>
+            </form>
+            <form method="post" action="{{ url_for('delete_task', task_id=loop.index0) }}" style="display: inline">
+                <button type="submit" class="btn btn-danger btn-sm">
+                    Delete
+                </button>
+            </form>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+<a href="/add_task" class="btn btn-primary">Add New Task</a>
+{%endblock%}
